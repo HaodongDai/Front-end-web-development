@@ -1,0 +1,13 @@
+.Contact {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: baseline;
+    font-size: 20px;
+}
+
+.Contact > p {
+    flex: 1 0 100%;
+    text-align: center;
+}
+
