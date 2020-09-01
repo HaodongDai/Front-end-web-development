@@ -12,4 +12,4 @@ Some additional functionalities:
 3. The navigation menu item will be highlighted when the corresponding section is being active viewed.
 
 ## Viewing page
-To view the page, see this [link](http://htmlpreview.github.io/?https://github.com/HaodongDai/Front-end-web-development/blob/master/proj2-landing%20page/index.html)
+To view the page, see this [link](https://haodongdai.github.io/FEND-proj2-landing-page/)
