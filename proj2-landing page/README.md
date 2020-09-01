@@ -7,4 +7,4 @@ The javascript file app.js was completed by me to achieve functionality.
 This project is aiming to create a webpage with dynamically created navigation bar and highlighted section in view when scrolling.
 
 ## Viewing page
-To view the page, see this [link](http://index.html.github.io/)
+To view the page, see this [link](http://htmlpreview.github.io/?https://github.com/HaodongDai/Front-end-web-development/blob/master/proj2-landing%20page/index.html)
