@@ -64,6 +64,12 @@ section {
 /* ---- Module Rules ---- */
 
 /* Navigation Styles*/
+
+/* making the navigation menu fixed */
+.navbar_menu {
+    position: fixed;
+}
+
 .navbar__menu ul {
     padding-left: 0;
     margin: 0;
@@ -74,7 +80,7 @@ section {
     display: inline-block;
 }
 
-.navbar__menu .menu__link {
+.navbar__menu .menu__item {
     display: inline-block;
     padding: 1em;
     font-weight: bold;
@@ -82,7 +88,7 @@ section {
     color: #000;
 }
 
-.navbar__menu .menu__link:hover {
+.navbar__menu .menu__item:hover {
     background: #333;
     color: #fff;
     transition: ease 0.3s all;
@@ -206,6 +212,41 @@ section.active-class .landing__container::before {
 section.active-class .landing__container::after {
     opacity: 1;
     animation: rotate 5s linear 0s infinite forwards reverse;
+}
+
+/* styling for back to top button  */
+.back-to-top-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 50px;
+    transition: all 0.5s ease-in-out;
+    padding: 10px;
+    
+    /* fixed position to the right bottom corner*/
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}
+
+.back-to-top-link img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.back-to-top-link span {
+    font-size: 10px;
+}
+
+.show {
+    opacity: 1;
+}
+
+.hide {
+    visibility: hidden;
 }
 
 /* Section Active Styles Keyframe Animations */

@@ -18,12 +18,17 @@
  * 
 */
 
-/* return a nodelist of all sections in html, prefix required */ 
-const sections = document.querySelectorAll('section');
+/* return a HTML collection of all section elements in html */ 
+const allSections = document.getElementsByTagName('section');
 
-/* return the navigation bar ul element, prefix required */
-const navbar = document.querySelector('#navbar__list');
+/* return the nav ul element */
+const navigationMenu = document.getElementById('navbar__list');
 
+/* set the first section as the default nearestSection */
+let nearestSection = allSections[0];
+
+/* get the back-to-top icon */
+const topIcon = document.getElementById('back-to-top-icon');
 
 /**
  * End Global Variables
@@ -31,37 +36,52 @@ const navbar = document.querySelector('#navbar__list');
  * 
 */
 
-/* check the largest section that is actively viewed in the viewport */
-function getActiveSection() {
-    if (sections.length == 0) {
-        return null;
-    }
+/* return the section fully in viewport and nearest to the top */
+function getTopSectionInViewport() {
+    //if there is no section element in the html, then return null
+    if (allSections.length === 0) {return null}
     
-    let min = 10000;
-    let ret = sections[0];
-    let elementHeight = 0;
-
-    // get the nearest element from the top of viewport 
-    for (const section of sections) {
-        let rect = section.getBoundingClientRect();
-        if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-            if (rect.top < min) {
-                min = rect.top;
-                ret = section;
-                elementHeight = section.clientHeight;
+    let min = Infinity;
+    //get the nearest element to the top of viewport
+    for (let i = 0; i < allSections.length; i++) {
+        let rect = allSections[i].getBoundingClientRect();
+        let top = rect.top;
+        let left = rect.left;
+        let bottom = rect.bottom;
+        let right = rect.right;
+        if (top >= 0 && 
+            left >= 0 && 
+            bottom <= window.innerHeight && 
+            right <= window.innerWidth) {
+                if (top < min) {
+                    min = top;
+                    // nearestSection is a global variable
+                    nearestSection = allSections[i];
+                }
             }
-        }
     }
-    
-    // if any section with part of it within the viewport, then choose the largest section as the active one
-    for (const section of sections) {
-        let rect = section.getBoundingClientRect();
-        if (rect.top < 0 && rect.bottom > 0 && rect.bottom > elementHeight) {
-            ret = section;
-        }
+}
+
+/* compare the nearest section to section with lower part of it within the viewport,
+   and return the largest one as the active section */
+function getTopSection() {
+    getTopSectionInViewport();
+    for (section of allSections) {
+            let rect = section.getBoundingClientRect();
+            if (rect.top < 0 && rect.bottom > 0 && rect.bottom > nearestSection.clientHeight) {
+                nearestSection = section;
+            }
     }
-    
-    return ret;
+    return nearestSection;
+}
+
+/* remove the active class from all of the sections attributes */
+function removeActiveClass() {
+    /* no need to check whether this active-class exist in section attribute
+       by using the classList.remove() method  */
+    for (section of allSections) {
+        section.classList.remove('active-class');
+    }
 }
 
 /**
@@ -70,47 +90,74 @@ function getActiveSection() {
  * 
 */
 
-// build the nav
-function buildnav() {
-    for (let section of sections) {
-        let navItem = document.createElement('li');
-        navItem.className = 'menu__link'; //correspond to css file
-        navItem.innerText = section.dataset.nav; // from data-nav attribute of element section in html
-        navbar.appendChild(navItem);
-    } 
+/* highlight the current active section in navigation menu with yellow background */
+function highlightActiveNavItem() {
+    let navItems = document.getElementsByClassName('menu__item');
+    let activeSection = document.querySelector('.active-class');
+    //get active section in navigation menu
+    let activeNavSection = document.getElementById('navItem-' + activeSection.id);
+    for (navItem of navItems) {
+        navItem.removeAttribute('style');
+    }
+    activeNavSection.style.background = 'yellow';
 }
 
-// Add class 'active' to section when near top of viewport
-function addActive() {
-    // add an scroll event
-    window.addEventListener('scroll', function() {
-        //remove active-class from all of the sections
-        for (let section of sections) {
-            if (section.classList.contains('active-class')) {
-                section.classList.remove('active-class');
-            }
-        }
-        let activeSection = getActiveSection();
-        activeSection.classList.add('active-class');        
-    }) 
+/* change class of back-to-top icon */
+function backToTop() {
+    // record current scroll distance at y-axis
+    let scrollY = window.scrollY;
+    // when at the top of page, this icon is hidden
+    (scrollY > 0) ? topIcon.className = 'back-to-top-link show' : topIcon.className = 'back-to-top-link hide';
 }
+window.addEventListener('scroll', backToTop);
 
-// Add functionality to scroll to section by listening to 'click' event
-function scrollToSection() {
-    //the navigation bar 'navbar' listen to the click event (event delegation)
-    navbar.addEventListener('click', function(event) {
-        let name = event.target.innerText.replace(' ', '').toLowerCase();
-        let section = document.getElementById(name);
-        section.scrollIntoView();
-    })
+/* performing the scrolling to top functionality */
+function scrollToTop() {
+    //get the number of pixels that body is scrolled vertically
+    const distance = document.documentElement.scrollTop;
+    if (distance > 0) {
+        window.scrollTo(0, 0);
+    }
 }
+topIcon.addEventListener('click', scrollToTop);
+
+
+/* hide fixed navigation menu while not scrolling for more than 5s
+   and show navigation menu while scrolling */
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', function() {
+    nav.className = 'navbar__menu show';
+    //when not scrolling for more than 5s, the navigation menu is hidden
+    setTimeout(function() {
+        nav.className = 'navbar__menu hide';
+    }, 5000);
+});
+
+
 
 //build menu
-buildnav();
+for (let section of allSections) {
+    let navItem = document.createElement('li');
+    navItem.setAttribute('class', 'menu__item') // correspond to style.css
+    navItem.textContent = section.dataset.nav;
+    navItem.id = 'navItem-' + section.id;
+    navigationMenu.appendChild(navItem);
+} 
 
 // Scroll to section on link click
-scrollToSection();
+navigationMenu.addEventListener('click', function(event) {
+    let sectionId = event.target.innerText.replace(' ','').toLowerCase()
+    document.getElementById(sectionId).scrollIntoView({behavior: 'smooth'});
+})
 
-// Set sections as active
-addActive();
+// Set sections as active, listen to the scroll event
+window.addEventListener('scroll', function() {
+    highlightActiveNavItem();
+    //remove active-class from all of the sections
+    removeActiveClass();
+    let activeSection = getTopSection();
+    /*if the active-class already exists in activeSection, classList method will not
+      add the class again */
+    activeSection.classList.add('active-class');        
+}) 
 
