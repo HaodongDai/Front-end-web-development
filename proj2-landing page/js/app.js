@@ -125,14 +125,16 @@ topIcon.addEventListener('click', scrollToTop);
 /* hide fixed navigation menu while not scrolling for more than 5s
    and show navigation menu while scrolling */
 const nav = document.querySelector('nav');
+let timeout;
 window.addEventListener('scroll', function() {
     nav.className = 'navbar__menu show';
+    //clear all timeout, so the timer will starts just after the last scrolling
+    clearTimeout(timeout);
     //when not scrolling for more than 5s, the navigation menu is hidden
-    setTimeout(function() {
+    timeout = setTimeout(function() {
         nav.className = 'navbar__menu hide';
     }, 5000);
 });
-
 
 
 //build menu
