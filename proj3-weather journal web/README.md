@@ -8,6 +8,4 @@ This project aims to create an asynchronous web app that uses Web API(OpenWeathe
 2. A client was created to make GET request to external web API to fetch desired data (ie. temperature). This client also make POST request to my app to store the data obtained from the previous GET request and retrieve data from our app's endpoint to dynamically update the webpage UI.
 3. Asynchronous function and Promises are key points in client side code to improve efficiency(app.js).
 
-## Viewing Link
-You can view this webpage at this [link](https://haodongdai.github.io/FEND-proj3-weather-journal-app/)
 
