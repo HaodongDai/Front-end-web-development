@@ -76,9 +76,13 @@ a button {
 }
 
 /* media queries */
-@media(max-width: 1400px) {
+@media(max-width: 800px) {
     body {
         font-size: 15px;
+    }
+
+    #mainTitle {
+        font-size: 40px;
     }
 
     .grid-cards {

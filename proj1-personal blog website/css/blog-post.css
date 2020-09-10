@@ -76,3 +76,19 @@
     overflow: auto;
     text-overflow: ellipsis;
 }
+
+#articleTitle {
+    font-size: 50px;
+}
+
+#articleDate {
+    color: grey;
+}
+
+#imgDescription {
+    text-align: center;
+}
+
+#profileTitle {
+   color: grey; font-size: 25px;
+}

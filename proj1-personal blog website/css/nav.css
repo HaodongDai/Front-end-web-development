@@ -4,15 +4,17 @@
     height: 1000px;
     /* background-attachment: fixed; */
     margin-bottom: 40px;
+    position: relative;
 }
 
 header + h1 {
     text-align: center;
     color: white;
     font-size: 100px;
-    position: absolute;
     bottom: 300px;
+    position: absolute;
     left: 10%;
+    top: 35%;
 }
 
 nav {
