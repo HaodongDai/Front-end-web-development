@@ -6,4 +6,4 @@
 3. There are two html files, one is for homepage and the other is for a specific blog post. 
 
 ## Viewing Page
-This is the [link]() that you can view the page
+This is the [link](https://haodongdai.github.io/FEND-proj1-personal-website/) that you can view the page
