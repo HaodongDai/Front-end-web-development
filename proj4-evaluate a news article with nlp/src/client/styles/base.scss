@@ -1,0 +1,18 @@
+//defining variables in scss file
+$font-stack: Arial, Roboto, sans-serif;
+
+body {
+    font-family: $font-stack;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+}
+
+main {
+    flex: 2;
+}
+
+section {
+    margin: 50px auto;
+}

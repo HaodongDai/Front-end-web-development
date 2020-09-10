@@ -1,0 +1,28 @@
+#Contact {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: baseline;
+    font-size: 20px;
+
+    ul {
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        
+        li {
+            margin-right: 30px;
+        }
+    }
+
+    h3 {
+        margin-right: 50px;
+        font-size: 35px;
+    }
+}
+
+.logo-img {
+    height: 50px;
+    width: 50px;
+}

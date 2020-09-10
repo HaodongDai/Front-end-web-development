@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Evaluation of articles using nlp</title>
+    </head>
+
+    <body>
+
+        <header>
+            <div class="logo">
+                <img id = 'logoMain'>
+            </div>
+        </header>
+
+        <main>
+            <section>
+                <h1>Type any text you want:</h1>
+                <form class="" onsubmit="return handleSubmit(event)">
+                    <input id="name" type="text" name="input" value="" placeholder="Text you want">
+                    <input type="submit" name="" value="submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
+                </form>
+            <section>
+
+            <section>
+                <strong>Results:</strong>
+                <div id = "result"></div>
+            </section>
+        </main>
+
+        <footer>
+            <div class = "Contact" id = "Contact">
+                <h3>Contact me at</h3>
+                <ul>
+                    <li><a href = "https://github.com/HaodongDai">
+                        <img src = "./img/GitHub-Mark-64px.png" alt = "github logo" class = "logo-img" id = 'logo2'>
+                    </a></li>
+                    <li><a href = "https://www.linkedin.com/in/haodong-dai-4b37a9191/">
+                        <img src = "./img/LI-In-Bug.png" alt = "Linkedin logo" class = "logo-img" id = 'logo3'>
+                    </a></li>
+                    <li><a href = "somethingfake">
+                        <img src = "./img/Twitter_Logo_Blue.png" alt = "twitter logo" class = "logo-img" id = 'logo4'>
+                    </a></li>
+                    <li><a href = "somethingfake">
+                        <img src = "./img/facebook logo.png" alt = "facebook logo" class = "logo-img" id = 'logo1'>
+                    </a></li>
+                </ul>
+        </footer>
+        <script> //Register a Service Worker with our app
+            // Check that service workers are supported by the browser
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+           </script>
+    </body>
+</html>
