@@ -11,21 +11,23 @@ const postUserInput = async function(url, data) {
     })
     
     try {
-        const newData = await res.json();
-        console.log(newData);
+        const newData = await res.json();     
         return newData;
     } catch(error) {
         console.log('An error occured: ', error)
     }
 }
 
-/*
-const updateUI = async function() {
-    const res = await fetch('/postRoute');
+
+const updateUI = async function(data) {
+    document.getElementById('entryHolder').innerHTML = data.temperature;
 }
-*/
+
+
+
 export {
-    postUserInput
+    postUserInput,
+    updateUI
 }
 
 /*

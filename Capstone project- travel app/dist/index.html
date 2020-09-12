@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Weather Journal</title>
+<link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
+<link href="main.css" rel="stylesheet"></head>
+ <body>
+<div id = "app">
+  <div class ="holder headline">
+    Weather Journal App
+  </div>
+  <div class ="holder location">
+    <label for="location">Enter your destination location here</label>
+    <input type="text" id="location" placeholder="enter location here">
+  </div>
+  <div class ="holder date">
+    <label for="date">Enter your date of leaving here</label>
+    <input type="date" id = "date">
+    <button id="generate" type = "submit" onsubmit="return Client.handleSubmit(event)" onclick="return Client.handleSubmit(event)"> Generate </button>
+  </div>
+  <div class ="holder entry">
+    <div class = "title">Most Recent Entry</div>
+   <div id = "entryHolder"></div>
+  </div>
+</div>
+
+<script type="text/javascript" src="main.js"></script></body>
+</html>

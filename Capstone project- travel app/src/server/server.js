@@ -42,6 +42,7 @@ app.post('/postRoute', async function (req, res) {
     const location = req.body.location;
     const date = req.body.dateOfLeaving;
     await enclosedSteps(location, date);
+    console.log('after enclosed:', projectData)
     res.send(projectData);
 })
 
@@ -66,9 +67,11 @@ const getCoordinate = async function(cityName, userName) {
     const res = await fetch(url);
     try {
         const geoData = await res.json();
+        projectData = {};
         projectData.latitude = geoData.geonames[0].lat;
         projectData.longitude = geoData.geonames[0].lng;
         projectData.location = cityName;
+        console.log('in geo:', projectData);
         return {latitude: projectData.latitude, longitude: projectData.longitude};
     } catch(error) {
         console.log('An error occured: ', error);
@@ -79,7 +82,7 @@ const getCoordinate = async function(cityName, userName) {
 const weatherBitAPI = 'dd3e1f0a089545eba5e1890a584eef8d';
 const getFutureWeather = async function(latitude, longitude, apiKey) {
     const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
-    const res = await fetch(url)
+    const res = await fetch(url);
     try {
         const weatherData = await res.json();
         projectData.description = weatherData.data[0].weather.description;
@@ -89,6 +92,7 @@ const getFutureWeather = async function(latitude, longitude, apiKey) {
         projectData.appMaxTemp = weatherData.data[0].app_max_temp
         projectData.uv = weatherData.data[0].uv;
         projectData.temperature = weatherData.data[0].temp;
+        console.log('in weather:', projectData);
         return weatherData;
     } catch(error) {
         console.log('An error occured: ', error);
@@ -98,7 +102,7 @@ const getFutureWeather = async function(latitude, longitude, apiKey) {
 
 const getCurrentWeather = async function(latitude, longitude, apiKey) {
     const url = `https://api.weatherbit.io/v2.0/current?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
-    const res = await fetch(url)
+    const res = await fetch(url);
     try {
         const weatherData = await res.json();
         projectData.description = weatherData.data[0].weather.description;
@@ -107,6 +111,7 @@ const getCurrentWeather = async function(latitude, longitude, apiKey) {
         projectData.uv = weatherData.data[0].uv;
         projectData.sunrise = weatherData.data[0].sunrise;
         projectData.sunset = weatherData.data[0].sunset;
+        console.log('in weather:', projectData);
         return weatherData;
     } catch(error) {
         console.log('An error occured: ', error);
@@ -120,6 +125,7 @@ const getPixabayPic = async function(cityName, pixabayAPI) {
     try {
         const picData = await res.json();
         projectData.img = picData.hits[0].webformatURL;
+        console.log('in pix:', projectData);
         return picData;
     } catch(error) {
         console.log('An error occured: ', error);
