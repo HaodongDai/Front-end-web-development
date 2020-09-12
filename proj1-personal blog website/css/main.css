@@ -90,6 +90,10 @@ a button {
         grid-template-rows: repeat(4,auto);
     }
 
+    #item-content {
+        padding: 100px 100px;
+    }
+
     #card1 {
         /* row start/column start/row end/column end */
         grid-area: 1/1/2/2;

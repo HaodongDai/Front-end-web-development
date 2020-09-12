@@ -27,7 +27,7 @@
 /* making grid with content-blog */
 .container-blog {
     display : grid;
-    grid-template-columns: 350px auto;
+    grid-template-columns: 350px auto 10px;
     grid-template-rows: 75px auto auto auto auto;
     grid-gap: 50px 50px;
 }
