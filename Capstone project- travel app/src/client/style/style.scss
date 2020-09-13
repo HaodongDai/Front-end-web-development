@@ -13,7 +13,7 @@ body {
     /* provide a smooth scroll with momentum */
     -webkit-overflow-scrolling: touch;
     list-style-type: none;
-    background: url('../views/img/background4.jpg');
+    background: url('../views/img/background6.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     
@@ -37,14 +37,17 @@ body {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: url('../views/img/background6.jpg') no-repeat;
-            background-size: cover;
+            //background: url('../views/img/background6.jpg') no-repeat;
+            //background-size: cover;
         }
 
         .photo {
             grid-area: 2/1/3/2;
-            max-height: 100%;
-            max-width: 100%;
+               
+            #location-photo {
+                max-width: 100%;
+                min-height: 100%;
+            }
         }
 
         footer {

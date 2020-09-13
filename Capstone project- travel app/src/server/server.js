@@ -41,7 +41,12 @@ app.get('/getRoute', function (req, res) {
 app.post('/postRoute', async function (req, res) {
     const location = req.body.location;
     const date = req.body.dateOfLeaving;
+    const dateOfReturn = req.body.dateOfReturn;
+    const newDate = new Date(date);
+    const newDateOfReturn = new Date(dateOfReturn);
+    const length = Math.round((newDateOfReturn.getTime() - newDate.getTime()) / (1000 * 3600 * 24));
     projectData = await enclosedSteps(location, date);
+    projectData.lengthOfTrip = length;
     res.send(projectData);
 })
 
