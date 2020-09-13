@@ -1,0 +1,38 @@
+.flex-container {
+    font-size: 25px;
+    text-align: center;
+    .location {
+
+        input {
+            margin: 15px 15px;
+            font-size: 25px;
+            width: 35%;
+        }
+    }
+
+    .date {
+
+        input {
+            margin: 15px 15px;
+            font-size: 25px;
+            width: 45%;
+        }
+    }
+
+    .button {
+
+        #save-trip {
+            font-size: 20px;
+            width: 40%;
+        }
+
+        #delete-trip {
+            font-size: 20px;
+            width: 40%;
+        }
+    }
+
+    ul {
+        list-style-type: none;
+    }
+}

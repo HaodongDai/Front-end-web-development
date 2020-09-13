@@ -41,12 +41,18 @@ app.get('/getRoute', function (req, res) {
 app.post('/postRoute', async function (req, res) {
     const location = req.body.location;
     const date = req.body.dateOfLeaving;
-    await enclosedSteps(location, date);
-    console.log('after enclosed:', projectData)
+    projectData = await enclosedSteps(location, date);
     res.send(projectData);
 })
 
-
+app.delete('/deleteRoute', function(req, res) {
+    if (req.body.location === projectData.location) {
+        projectData = {};
+        res.send({message: 'The record has been successfully deleted from server!'});
+    } else {
+        res.send({message: 'No record match your selection'});
+    }
+})
 
 // Check whether the date of leaving is within 7 days from current time
 function checkdate(dateOfLeaving) {
@@ -67,12 +73,11 @@ const getCoordinate = async function(cityName, userName) {
     const res = await fetch(url);
     try {
         const geoData = await res.json();
-        projectData = {};
-        projectData.latitude = geoData.geonames[0].lat;
-        projectData.longitude = geoData.geonames[0].lng;
-        projectData.location = cityName;
-        console.log('in geo:', projectData);
-        return {latitude: projectData.latitude, longitude: projectData.longitude};
+        let ret = {};
+        ret.latitude = geoData.geonames[0].lat;
+        ret.longitude = geoData.geonames[0].lng;
+        ret.location = cityName;
+        return ret;
     } catch(error) {
         console.log('An error occured: ', error);
     }
@@ -80,66 +85,65 @@ const getCoordinate = async function(cityName, userName) {
 
 
 const weatherBitAPI = 'dd3e1f0a089545eba5e1890a584eef8d';
-const getFutureWeather = async function(latitude, longitude, apiKey) {
-    const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
+const getFutureWeather = async function(data, apiKey) {
+    const url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${data.latitude}&lon=${data.longitude}&key=${apiKey}`;
     const res = await fetch(url);
     try {
         const weatherData = await res.json();
-        projectData.description = weatherData.data[0].weather.description;
-        projectData.minTemp = weatherData.data[0].min_temp;
-        projectData.appMinTemp = weatherData.data[0].app_min_temp;
-        projectData.maxTemp = weatherData.data[0].max_temp;
-        projectData.appMaxTemp = weatherData.data[0].app_max_temp
-        projectData.uv = weatherData.data[0].uv;
-        projectData.temperature = weatherData.data[0].temp;
-        console.log('in weather:', projectData);
-        return weatherData;
+        data.description = weatherData.data[0].weather.description;
+        data.minTemp = weatherData.data[0].min_temp;
+        data.appMinTemp = weatherData.data[0].app_min_temp;
+        data.maxTemp = weatherData.data[0].max_temp;
+        data.appMaxTemp = weatherData.data[0].app_max_temp
+        data.uv = weatherData.data[0].uv;
+        data.temperature = weatherData.data[0].temp;
+        return data;
     } catch(error) {
         console.log('An error occured: ', error);
     }
 }
 
 
-const getCurrentWeather = async function(latitude, longitude, apiKey) {
-    const url = `https://api.weatherbit.io/v2.0/current?lat=${latitude}&lon=${longitude}&key=${apiKey}`;
+const getCurrentWeather = async function(data, apiKey) {
+    const url = `https://api.weatherbit.io/v2.0/current?lat=${data.latitude}&lon=${data.longitude}&key=${apiKey}`;
     const res = await fetch(url);
     try {
         const weatherData = await res.json();
-        projectData.description = weatherData.data[0].weather.description;
-        projectData.appTemp = weatherData.data[0].app_temp;
-        projectData.temperature = weatherData.data[0].temp;
-        projectData.uv = weatherData.data[0].uv;
-        projectData.sunrise = weatherData.data[0].sunrise;
-        projectData.sunset = weatherData.data[0].sunset;
-        console.log('in weather:', projectData);
-        return weatherData;
+        data.description = weatherData.data[0].weather.description;
+        data.appTemp = weatherData.data[0].app_temp;
+        data.temperature = weatherData.data[0].temp;
+        data.uv = weatherData.data[0].uv;
+        data.sunrise = weatherData.data[0].sunrise;
+        data.sunset = weatherData.data[0].sunset;
+        return data;
     } catch(error) {
         console.log('An error occured: ', error);
     }
 }
 
 const pixabayAPI = '18269380-1c1bb144b5dceda2dc7bf77df';
-const getPixabayPic = async function(cityName, pixabayAPI) {
-    const url = `https://pixabay.com/api/?q=${cityName}&image_type=photo&key=${pixabayAPI}`;
+const getPixabayPic = async function(data, pixabayAPI) {
+    const url = `https://pixabay.com/api/?q=${data.location}&image_type=photo&key=${pixabayAPI}`;
     const res = await fetch(url)
     try {
         const picData = await res.json();
-        projectData.img = picData.hits[0].webformatURL;
-        console.log('in pix:', projectData);
-        return picData;
+        data.img = picData.hits[0].webformatURL;
+        return data; //this will return the final data including all the information we want
     } catch(error) {
         console.log('An error occured: ', error);
     }
 }
 
-const enclosedSteps = async function(location, dateOfLeaving) {
-    getCoordinate(location, geoUserName)
-    .then(function(res) {
-        if (checkdate(dateOfLeaving)) { // whithin 7 days, return current weather forecast
-            getCurrentWeather(res.latitude, res.longitude, weatherBitAPI)
-        } else { // beyond 7 days, return future weather forecast
-            getFutureWeather(res.latitude, res.longitude, weatherBitAPI)
-        }
-    })
-    .then(getPixabayPic(projectData.location,pixabayAPI))
+const enclosedSteps = async function(location, dateOfLeaving) { 
+    let locationData = await getCoordinate(location, geoUserName);
+
+    if (checkdate(dateOfLeaving)) { // whithin 7 days, return current weather forecast
+        let weatherData = await getCurrentWeather(locationData, weatherBitAPI);
+        let finalResult = await getPixabayPic(weatherData, pixabayAPI);
+        return finalResult;
+    } else { // beyond 7 days, return future weather forecast
+        let weatherData = await getFutureWeather(locationData, weatherBitAPI);
+        let finalResult = await getPixabayPic(weatherData, pixabayAPI);
+        return finalResult;
+    } 
 }

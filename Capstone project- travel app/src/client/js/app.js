@@ -11,57 +11,49 @@ const postUserInput = async function(url, data) {
     })
     
     try {
-        const newData = await res.json();     
+        const newData = await res.json();
         return newData;
     } catch(error) {
         console.log('An error occured: ', error)
     }
 }
 
-
-const updateUI = async function(data) {
-    document.getElementById('entryHolder').innerHTML = data.temperature;
-}
-
-
-
-export {
-    postUserInput,
-    updateUI
-}
-
-/*
-//update the UI by retrieving data from server and fill content into html elements
-const updateUI = async function() {
-    const res = await fetch('/getRoute');
+const deleteUserInput = async function(url, data) {
+    const res = await fetch(url, {
+        method: 'DELETE',
+        credentials: 'same-origin',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
 
     try {
-        const retrievedData = await res.json();
-        document.getElementById('temp').innerHTML = 'Temperature: ' + retrievedData.temperature;
-        document.getElementById('date').innerHTML = 'Date: ' + retrievedData.date;
-        document.getElementById('content').innerHTML = "User's Feeling" + retrievedData.userResponse;
+        const newData = await res.json();
+        document.getElementById('result').innerHTML = newData.message;
     } catch(error) {
         console.log('An error occured: ', error);
     }
 }
 
-
-//Enclosed all the steps (get data from external API, post data to server, update UI)
-
-function enclosedSteps() {
-    //get the entered zip code by user in corresponding <input> tag
-    const zipCode = document.getElementById('zip').value;
-    getWeatherData(baseURL, zipCode, apiKey)
-    .then(function (data) {
-        const feeling = document.getElementById('feelings').value;
-        postWeatherData('/postRoute', {temperature: data.main.temp, date: newDate, userResponse: feeling});
-    })
-    .then(updateUI());
+const updateUI = function(data) {
+    const result = document.getElementById('result');
+    result.innerHTML = ''; //remove all child element before updating
+    const exclusion = ['latitude', 'longitude', 'location', 'img'];
+    for (let key in data) {
+        if (!exclusion.includes(key)) {
+            let child = document.createElement('li');
+            child.innerHTML = `${key}: ${data[key]}`;
+            result.appendChild(child);
+        } 
+    }
+    const locationPhoto = document.getElementById('location-photo');
+    locationPhoto.src = data.img;
 }
 
+export {
+    postUserInput,
+    deleteUserInput,
+    updateUI
+}
 
-//Event listener for element with #generate when it's clicked
-//document.getElementById('generate').addEventListener('click', enclosedSteps);
-*/
 
 

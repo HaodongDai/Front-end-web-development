@@ -1,11 +1,16 @@
-import { postUserInput, updateUI } from './app'
+import { postUserInput, deleteUserInput, updateUI } from './app'
 
 async function handleSubmit(event) {
     event.preventDefault();
     const data = {location: document.getElementById('location').value, 
      dateOfLeaving: document.getElementById('date').value}
-    console.log(data);
     postUserInput('/postRoute', data).then(data=>updateUI(data))
 }
 
-export { handleSubmit }
+async function handleDelete(event) {
+    event.preventDefault;
+    deleteUserInput('/deleteRoute', {location: document.getElementById('location').value});
+}
+
+export { handleSubmit,
+         handleDelete }
