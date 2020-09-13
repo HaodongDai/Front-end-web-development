@@ -47,6 +47,14 @@
 
             <footer></footer>
         </div>
-            
+        <script> //Register a Service Worker with our app
+            // Check that service workers are supported by the browser
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+           </script>
     </body>
 </html>
